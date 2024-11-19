@@ -16,10 +16,7 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 app.get('/', (req, res) => {
-    res.send('Welcome ');
-});
-app.get('/', (req, res) => {
-    res.send('What supper');
+    res.send('Welcome to API');
 });
 app.get('/api/books', (req, res) => {
     res.json({ message: 'List of books' });
