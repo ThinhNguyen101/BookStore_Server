@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+require('dotenv').config();
 
 // Truy cập các biến môi trường
 const dbHost = process.env.DB_HOST;
@@ -8,32 +9,29 @@ const dbPassword = process.env.DB_PASSWORD;
 const dbName = process.env.DB_NAME;
 const port = process.env.PORT || 3000;
 
-
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const { connect } = require("./config/db");
-// const studentRoutes = require("./routes/Students.js");
+const productRoutes = require('./routes/productRoutes');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use(cors());
 
+
 connect()
-  .then((connection) => {
+  .then(() => {
     console.log("Connected to the database.");
   })
   .catch((error) => {
     console.log("Database connection failed!");
-    console.log(error);
+    console.error(error);
   });
 
-// app.use("/students", studentRoutes.router);
+app.use(express.json());
+app.use("/api/products", productRoutes);
 
-// app.get("/tester", (req, res) => {
-//   res.send("Hello World!");
-// });
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Server running at http://127.0.0.1:${port}/`);
 });

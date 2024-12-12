@@ -13,11 +13,6 @@ const config = {
     },
 };
 
-sql.connect(config)
-  .then(() => console.log("Kết nối thành công"))
-  .catch((err) => console.error("Lỗi kết nối:", err));
-
-
 module.exports = {
     connect: () => sql.connect(config),
     sql,
