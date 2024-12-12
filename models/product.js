@@ -5,15 +5,15 @@ const Product = {
     const query = `
       SELECT  
         i.id_item AS ma_san_pham,
-          CASE 
-              WHEN s.id_item IS NOT NULL THEN N'Văn phòng phẩm'
-              WHEN b.id_item IS NOT NULL THEN N'Sách'
-              WHEN n.id_item IS NOT NULL THEN N'Báo'
-          END AS danh_muc,
-          i.ten_vat_pham AS ten_san_pham,
-          i.gia_niem_yet,
-          i.so_luong_kha_dung,
-          COALESCE(SUM(o.sl_nhap), 0) AS so_luong_ban
+        CASE 
+            WHEN s.id_item IS NOT NULL THEN N'Văn phòng phẩm'
+            WHEN b.id_item IS NOT NULL THEN N'Sách'
+            WHEN n.id_item IS NOT NULL THEN N'Báo'
+        END AS danh_muc,
+        i.ten_vat_pham AS ten_san_pham,
+        i.gia_niem_yet,
+        i.so_luong_kha_dung,
+        COALESCE(SUM(o.sl_nhap), 0) AS so_luong_ban
       FROM 
         item i
       LEFT JOIN stationery s ON i.id_item = s.id_item
@@ -24,11 +24,12 @@ const Product = {
           i.id_item, i.ten_vat_pham, i.gia_niem_yet, i.so_luong_kha_dung,
           s.id_item, b.id_item, n.id_item;
     `;
-    
     try {
-      const pool = await connect(); // Sử dụng kết nối từ config/db.js
+      const pool = await connect();  // Kết nối cơ sở dữ liệu
       const result = await pool.request().query(query);
-      return result.recordset;
+  
+      // Trả về kết quả đúng định dạng
+      return result.recordset || [];  // Đảm bảo không trả về null hoặc undefined
     } catch (error) {
       console.error('Error in getAll query:', error.message);
       throw new Error('Error fetching products');

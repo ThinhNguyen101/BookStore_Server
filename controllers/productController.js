@@ -6,13 +6,12 @@ const xlsx = require('xlsx');
 
 const getAllProducts = async (req, res) => {
   try {
-    const result = await Product.getAll();
-    res.status(200).json(result.recordset);
+    const result = await Product.getAll();  // Kết quả trả về từ Product.getAll()
+    res.status(200).json(result);  // Trả về kết quả trực tiếp
   } catch (error) {
     res.status(500).json({ message: 'Error fetching products', error });
   }
 };
-
 const getProductById = async (req, res) => {
   try {
     const { id } = req.params;

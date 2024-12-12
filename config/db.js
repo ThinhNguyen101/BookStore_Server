@@ -7,7 +7,7 @@ const config = {
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     options: {
-        encrypt: false, // Chỉ để false khi làm việc local
+        encrypt: true, // Chỉ để false khi làm việc local
         enableArithAbort: true,
         trustServerCertificate: true,
     },
