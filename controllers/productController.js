@@ -48,12 +48,23 @@ const getSearchedProducts = async (req, res) => {
 };
 
 const getFilteredByCategory = async (req, res) => {
+  const { category } = req.params;
+
+  if (!category) {
+    return res.status(400).json({ success: false, message: 'Category is required in the URL parameter' });
+  }
+
   try {
-    const { category } = req.query;
     const products = await Product.filterByCategory(category);
+
+    if (products.length === 0) {
+      return res.status(404).json({ success: false, message: `No products found in category ${category}` });
+    }
+
     res.status(200).json({ success: true, data: products });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    console.error('Error in getFilteredByCategory:', error.message);
+    res.status(500).json({ success: false, message: 'Error filtering products by category', error: error.message });
   }
 };
 
@@ -131,7 +142,6 @@ const deleteProductById = async (req, res) => {
     });
   }
 };
-
 
 // const bulkUpdate = async (req, res) => {
 //   try {
